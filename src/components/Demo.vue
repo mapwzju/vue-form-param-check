@@ -10,7 +10,7 @@
      type="text">
      </div>
     <div>
-      <button v-checkSubmit v-on:click="submit">提交</button>
+      <button v-checkSubmit>提交</button>
     </div>
   </div>
 </template>
@@ -19,7 +19,7 @@ export default {
   name: 'demo',
   methods: {
     submit () {
-     // alert('通过校验')
+      alert('通过校验')
     }
   }
 }

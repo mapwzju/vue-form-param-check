@@ -17,19 +17,19 @@ Vue.directive('checkParam', {
         let isRequired = binding.value.required
         if (isRequired) {
           if (!el.value || el.value === '') {
-            el.setAttribute('class', 'input-error')
+            el.className += ' input-error'
           }
         }
 
         // 判断正则
+        // debugger
         let regex = binding.value.regex
         if (regex === 'IpRegex') {
           if (!el.value.match(IP_REGEX)) {
-            el.setAttribute('class', 'input-error')
+            el.className += ' input-error'
           }
-        }
-        if (!el.value.match(regex)) {
-          el.setAttribute('class', 'input-error')
+        } else if (!el.value.match(regex)) {
+          el.className += ' input-error'
         }
       }
     })
@@ -40,13 +40,16 @@ Vue.directive('checkParam', {
 Vue.directive('checkSubmit', {
   // 当被绑定的元素插入到 DOM 中时……
   inserted: function (el, binding, vNode) {
-    el.addEventListener('mousedown', function (event) {
+    el.addEventListener('click', function (event) {
       let elements = document.getElementsByClassName('v-check')
+      var evObj = document.createEvent('Event')
+      evObj.initEvent('keyup', true, true)
       for (let element of elements) {
-        console.log(element)
-        var evObj = document.createEvent('Event');
-        evObj.initEvent('keyup', true, false);
-        element.dispatchEvent(evObj);
+        element.dispatchEvent(evObj)
+      }
+      let errorInputs = document.getElementsByClassName('input-error')
+      if (errorInputs.length === 0) {
+        vNode.context.submit()
       }
     })
   }
